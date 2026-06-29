@@ -64,7 +64,7 @@ export default function Hero() {
           variants={item}
           className="mx-auto mt-6 max-w-2xl text-lg text-white/90 sm:text-xl md:text-2xl"
         >
-          Mycie bruku, elewacji i ogrodzeń — Warszawa i okolice
+          Mycie bruku, elewacji i ogrodzeń — Koronowo i okolice
         </motion.p>
 
         <motion.div

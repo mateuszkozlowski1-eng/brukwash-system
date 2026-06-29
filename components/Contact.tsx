@@ -28,7 +28,7 @@ export default function Contact() {
           initial="hidden"
           whileInView="visible"
           viewport={inViewport}
-          className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2"
+          className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {/* Telefon */}
           <motion.a
@@ -67,6 +67,30 @@ export default function Contact() {
             </span>
             <span className="mt-2 break-all font-display text-2xl font-bold text-blue">
               {SITE.email}
+            </span>
+          </motion.a>
+
+          {/* Adres — otwiera Google Maps w nowej karcie */}
+          <motion.a
+            variants={fadeInUp}
+            href={SITE.mapsHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Zobacz na mapie: ${SITE.address.street}, ${SITE.address.postal} ${SITE.address.city}`}
+            whileHover={{ y: -4 }}
+            transition={{ type: "spring", stiffness: 300 }}
+            className="flex flex-col items-center rounded-2xl border border-navy/10 bg-light p-10 text-center shadow-md transition-shadow hover:shadow-xl"
+          >
+            <span className="text-5xl" aria-hidden="true">
+              📍
+            </span>
+            <span className="mt-4 font-display text-xl font-semibold uppercase tracking-wide text-navy">
+              Adres
+            </span>
+            <span className="mt-2 font-display text-2xl font-bold text-blue">
+              {SITE.address.street}
+              <br />
+              {SITE.address.postal} {SITE.address.city}
             </span>
           </motion.a>
         </motion.div>

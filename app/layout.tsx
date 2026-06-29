@@ -19,25 +19,27 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://brukwashsystem.pl"),
-  title: "BrukWash System — Mycie bruku, elewacji i ogrodzeń | Warszawa",
+  title: "BrukWash System – Mycie Bruku, Elewacji i Ogrodzeń | Koronowo",
   description:
-    "Profesjonalne mycie ciśnieniowe bruku, elewacji i ogrodzeń oraz impregnacja powierzchni. Warszawa i okolice (~50 km). Wycena bezpłatna — zadzwoń lub napisz.",
+    "Profesjonalne mycie bruku, elewacji i ogrodzeń. Impregnacja nawierzchni. Obsługujemy Koronowo, Bydgoszcz i okolice. Zadzwoń: 452 008 005.",
   keywords: [
     "mycie bruku",
     "mycie elewacji",
-    "mycie kostki brukowej",
-    "czyszczenie ogrodzeń",
-    "impregnacja bruku",
-    "mycie ciśnieniowe Warszawa",
+    "ogrodzenia",
+    "impregnacja",
+    "Koronowo",
+    "Bydgoszcz",
+    "BrukWash",
   ],
   authors: [{ name: "BrukWash System" }],
   openGraph: {
-    title: "BrukWash System — Czyste powierzchnie. Solidna robota.",
+    title: "BrukWash System – Mycie Bruku, Elewacji i Ogrodzeń",
     description:
-      "Mycie bruku, elewacji i ogrodzeń — Warszawa i okolice. Wycena bezpłatna.",
-    type: "website",
-    locale: "pl_PL",
+      "Profesjonalne mycie i impregnacja powierzchni zewnętrznych. Koronowo i okolice.",
+    url: "https://brukwashsystem.pl",
     siteName: "BrukWash System",
+    locale: "pl_PL",
+    type: "website",
     images: [
       {
         url: "/logo.jpg",
@@ -47,7 +49,33 @@ export const metadata: Metadata = {
       },
     ],
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: "https://brukwashsystem.pl",
+  },
+};
+
+// Structured data (Schema.org LocalBusiness) — dla wyszukiwarek / lokalnego SEO
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "BrukWash System",
+  description:
+    "Profesjonalne mycie bruku, elewacji i ogrodzeń. Impregnacja nawierzchni.",
+  telephone: "+48452008005",
+  email: "brukwashsystem@gmail.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "ul. Tucholska 36",
+    addressLocality: "Koronowo",
+    postalCode: "86-010",
+    addressCountry: "PL",
+  },
+  areaServed: ["Koronowo", "Bydgoszcz", "Nakło nad Notecią", "Sępólno Krajeńskie"],
+  url: "https://brukwashsystem.pl",
 };
 
 export default function RootLayout({
@@ -61,6 +89,10 @@ export default function RootLayout({
       className={`${barlowCondensed.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-white text-dark">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {children}
       </body>
     </html>
