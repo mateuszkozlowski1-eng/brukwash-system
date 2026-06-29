@@ -1,26 +1,52 @@
 @import "tailwindcss";
 
+/* ===== Paleta marki BrukWash System (wyciągnięta z logo) ===== */
+@theme {
+  --color-navy: #1e3a5f; /* granat — dom/ikona w logo */
+  --color-blue: #2d8fd4; /* niebieski — "Wash" w logo */
+  --color-blue-dark: #2477b3; /* ciemniejszy wariant dla hover */
+  --color-dark: #2d2d2d; /* ciemny grafit — tekst */
+  --color-light: #f4f8fc; /* bardzo jasny niebieski — tło sekcji */
+
+  --font-display: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground: #2d2d2d;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Płynne przewijanie do sekcji (kotwice) z odsunięciem pod sticky navbar */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+/* Wyraźny, dostępny focus dla nawigacji klawiaturą */
+:focus-visible {
+  outline: 3px solid var(--color-blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Szacunek dla preferencji ograniczenia ruchu */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
