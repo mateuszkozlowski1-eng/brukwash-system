@@ -28,10 +28,10 @@ export default function Hero() {
       id="hero"
       className="relative flex min-h-screen items-center justify-center overflow-hidden"
     >
-      {/* Tło — zdjęcie realizacji */}
+      {/* Tło — zdjęcie realizacji (efekt przed i po myciu kostki) */}
       <Image
-        src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600"
-        alt="Mycie ciśnieniowe powierzchni zewnętrznej"
+        src="/images/IMG20260413111624.jpg"
+        alt="Kostka brukowa przed i po myciu ciśnieniowym — BrukWash System"
         fill
         priority
         sizes="100vw"

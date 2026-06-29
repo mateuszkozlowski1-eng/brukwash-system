@@ -5,21 +5,27 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer, inViewport } from "@/lib/motion";
 
-// TODO: klient — ZDJĘCIA REALIZACJI: zastąp placeholdery Unsplash właściwymi zdjęciami.
-// Zdjęcia zostaną dostarczone przez klienta — placeholder do zastąpienia.
+// Zdjęcia realizacji BrukWash System (public/images) — kostka brukowa, podjazdy,
+// tarasy i elewacje. Zdjęcie tła Hero (przed/po) nie jest tu duplikowane.
 const PHOTOS = [
-  "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
-  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800",
-  "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=800",
-  "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800",
-  "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800",
-  "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=800",
-  "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800",
-  "https://images.unsplash.com/photo-1530563885674-66db50a1af19?w=800",
-  "https://images.unsplash.com/photo-1556909212-d5b604d0c90d?w=800",
-  "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?w=800",
-  "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800",
-  "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800",
+  { src: "/images/IMG20260327095146.jpg", alt: "Mycie ciśnieniowe kostki brukowej — czysty podjazd po renowacji" },
+  { src: "/images/Messenger_creation_BDDC1287-525C-49E0-B89E-DD3EDFF33CC2.jpg", alt: "Ścieżka ogrodowa z kostki brukowej po myciu ciśnieniowym" },
+  { src: "/images/IMG20260413134519.jpg", alt: "Podjazd z kostki brukowej z czerwonym obramowaniem po czyszczeniu" },
+  { src: "/images/IMG20260413111638.jpg", alt: "Kolorowa kostka brukowa po profesjonalnym myciu ciśnieniowym" },
+  { src: "/images/IMG20260327163652.jpg", alt: "Mycie tarasu — efekt przed i po czyszczeniu ciśnieniowym" },
+  { src: "/images/IMG20260413120422.jpg", alt: "Mycie kostki brukowej agregatem do powierzchni płaskich" },
+  { src: "/images/IMG20260331142806.jpg", alt: "Elewacja domu po myciu ciśnieniowym" },
+  { src: "/images/IMG20260401093536.jpg", alt: "Czysta elewacja budynku po renowacji" },
+  { src: "/images/IMG20260331085115.jpg", alt: "Mycie elewacji domu — usuwanie zabrudzeń i zazielenień" },
+  { src: "/images/IMG20260401092139.jpg", alt: "Elewacja domu — efekt przed i po myciu ciśnieniowym" },
+  { src: "/images/IMG20260401093638.jpg", alt: "Odświeżona elewacja budynku po czyszczeniu" },
+  { src: "/images/IMG20260416074735.jpg", alt: "Ścieżka z kostki brukowej w trakcie mycia ciśnieniowego" },
+  { src: "/images/IMG20260518082806.jpg", alt: "Podjazd z kostki brukowej przy żywopłocie po myciu" },
+  { src: "/images/IMG20260518152753.jpg", alt: "Czysty podjazd z kostki brukowej wzdłuż żywopłotu" },
+  { src: "/images/IMG20260618081833.jpg", alt: "Kostka brukowa przy wiacie po myciu ciśnieniowym" },
+  { src: "/images/IMG20260618092744.jpg", alt: "Mycie kostki brukowej przy garażu — efekt po czyszczeniu" },
+  { src: "/images/IMG20260618115728.jpg", alt: "Podjazd z kostki brukowej w ogrodzie po renowacji" },
+  { src: "/images/Messenger_creation_D14D1FB2-9FD3-4956-8CD9-80CE73157187.jpg", alt: "Ścieżka z kostki brukowej w ogrodzie po myciu ciśnieniowym" },
 ];
 
 export default function Gallery() {
@@ -52,9 +58,9 @@ export default function Gallery() {
           <h2 className="font-display text-4xl font-bold uppercase tracking-tight text-navy sm:text-5xl">
             Nasze realizacje
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-sm italic text-dark/50">
-            {/* TODO: klient — placeholdery do zastąpienia */}
-            Zdjęcia zostaną dostarczone przez klienta — placeholder do zastąpienia.
+          <p className="mx-auto mt-4 max-w-2xl text-dark/70">
+            Zobacz efekty naszej pracy — kostka brukowa, podjazdy, tarasy i elewacje
+            przed i po myciu ciśnieniowym.
           </p>
         </motion.div>
 
@@ -65,18 +71,18 @@ export default function Gallery() {
           viewport={inViewport}
           className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {PHOTOS.map((src, i) => (
+          {PHOTOS.map((photo, i) => (
             <motion.button
-              key={src}
+              key={photo.src}
               variants={fadeInUp}
               type="button"
               onClick={() => setActive(i)}
-              aria-label={`Powiększ zdjęcie realizacji nr ${i + 1}`}
+              aria-label={`Powiększ zdjęcie realizacji: ${photo.alt}`}
               className="group relative aspect-[4/3] overflow-hidden rounded-xl shadow-md"
             >
               <Image
-                src={src}
-                alt={`Realizacja BrukWash System — zdjęcie ${i + 1}`}
+                src={photo.src}
+                alt={photo.alt}
                 fill
                 loading="lazy"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -93,7 +99,7 @@ export default function Gallery() {
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={`Zdjęcie realizacji nr ${active + 1}`}
+          aria-label={PHOTOS[active].alt}
           onClick={() => setActive(null)}
           className="fixed inset-0 z-[60] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
         >
@@ -113,8 +119,8 @@ export default function Gallery() {
             onClick={(e) => e.stopPropagation()}
           >
             <Image
-              src={PHOTOS[active]}
-              alt={`Realizacja BrukWash System — zdjęcie ${active + 1} (podgląd)`}
+              src={PHOTOS[active].src}
+              alt={PHOTOS[active].alt}
               fill
               sizes="100vw"
               className="object-contain"
