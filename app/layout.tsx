@@ -42,12 +42,22 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/logo.jpg",
-        width: 1024,
-        height: 1024,
-        alt: "BrukWash System — logo",
+        // Ścieżka względna — Next.js rozwinie ją do pełnego URL na podstawie
+        // metadataBase (https://brukwashsystem.pl/og-image.jpg), czego wymagają
+        // crawlery Facebooka/Messengera.
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "BrukWash System – Mycie Bruku, Elewacji i Ogrodzeń",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BrukWash System – Mycie Bruku, Elewacji i Ogrodzeń",
+    description:
+      "Profesjonalne mycie i impregnacja powierzchni zewnętrznych. Koronowo i okolice.",
+    images: ["/og-image.jpg"],
   },
   robots: {
     index: true,
