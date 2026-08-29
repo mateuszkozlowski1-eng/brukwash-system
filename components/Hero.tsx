@@ -37,10 +37,9 @@ export default function Hero() {
         sizes="100vw"
         className="object-cover"
       />
-      {/* Ciemna nakładka w kolorze granatu */}
+      {/* Neutralne przyciemnienie dla czytelności tekstu — bez kolorowej poświaty */}
       <div
-        className="absolute inset-0"
-        style={{ backgroundColor: "rgba(30,58,95,0.75)" }}
+        className="absolute inset-0 bg-black/40"
         aria-hidden="true"
       />
 
