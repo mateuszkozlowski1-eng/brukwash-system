@@ -1,43 +1,142 @@
 @import "tailwindcss";
 
-/* ===== Paleta marki BrukWash System (wyciągnięta z logo) ===== */
+/* ==========================================================================
+   BrukWash System — „Hydro-Industrial Editorial”
+   Wapienny papier (dominanta) · atramentowy granat (tekst/sekcje ciemne)
+   · firmowy błękit „strumień” (jedyny akcent) · błoto (tylko do efektu mycia)
+   ========================================================================== */
 @theme {
-  --color-navy: #1e3a5f; /* granat — dom/ikona w logo */
-  --color-blue: #2d8fd4; /* niebieski — "Wash" w logo */
-  --color-blue-dark: #2477b3; /* ciemniejszy wariant dla hover */
-  --color-dark: #2d2d2d; /* ciemny grafit — tekst */
-  --color-light: #f4f8fc; /* bardzo jasny niebieski — tło sekcji */
+  --color-paper: #efece6; /* wapień / jasna kostka — tło dominujące */
+  --color-paper-deep: #e3dfd6; /* ciemniejszy beton — karty, podziały */
+  --color-ink: #0d1824; /* granat-czerń z logo — tekst i sekcje ciemne */
+  --color-ink-soft: #16263a; /* powierzchnie na ciemnym tle */
+  --color-navy: #1e3a5f; /* granat z logo */
+  --color-jet: #2d8fd4; /* błękit „Wash” z logo — akcent / strumień wody */
+  --color-jet-deep: #1b6fae; /* akcent z kontrastem AA na papierze */
+  --color-jet-bright: #6cc0f7; /* akcent na ciemnym tle */
+  --color-stone: #5b5a55; /* tekst drugorzędny na papierze (AA) */
+  --color-grime: #7a6f52; /* „brud” — kolor nagłówka przed umyciem */
 
-  --font-display: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
-  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-archivo), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-instrument), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --ease-wash: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-marquee: marquee 38s linear infinite;
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #2d2d2d;
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  background: var(--color-paper);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-body);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Płynne przewijanie do sekcji (kotwice) z odsunięciem pod sticky navbar */
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+::selection {
+  background: var(--color-jet);
+  color: #fff;
 }
 
-/* Wyraźny, dostępny focus dla nawigacji klawiaturą */
+/* Delikatne ziarno betonu na całej stronie — tekstura zamiast płaskiego tła */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Typografia strukturalna — szerokość osi wdth Archivo daje rytm:
+   wąskie nagłówki (kostka), szeroki wordmark w stopce */
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: "wdth" 72;
+  text-transform: uppercase;
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+}
+
+@utility display-wide {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-variation-settings: "wdth" 125;
+  text-transform: uppercase;
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ===== Efekt „mycia” nagłówka Hero =====
+   Tekst startuje w kolorze brudu z fakturą; czysta część (atrament)
+   przesuwa się od lewej jak pas umyty lancą. --wash animowane dzięki @property. */
+@property --wash {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+
+.wash-text {
+  --wash: 100%;
+  color: transparent;
+  background-image:
+    linear-gradient(
+      90deg,
+      var(--color-ink) var(--wash),
+      var(--color-jet) var(--wash),
+      var(--color-jet) calc(var(--wash) + 0.6%),
+      transparent calc(var(--wash) + 0.6%)
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.08' numOctaves='4'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .22 0 0 0 0 .12 0 0 0 1.6 -.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
+    linear-gradient(var(--color-grime), var(--color-grime));
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: wash-sweep 1.8s cubic-bezier(0.65, 0, 0.35, 1) 0.4s both;
+}
+
+@keyframes wash-sweep {
+  from {
+    --wash: -1%;
+  }
+  to {
+    --wash: 100%;
+  }
+}
+
+/* Wyraźny, dostępny focus */
 :focus-visible {
-  outline: 3px solid var(--color-blue);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-jet);
+  outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* Szacunek dla preferencji ograniczenia ruchu */
+/* FAQ — znacznik <summary> bez domyślnego trójkąta */
+summary::-webkit-details-marker {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -46,6 +145,7 @@ html {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }

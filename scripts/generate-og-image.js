@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- skrypt Node (CommonJS) */
 // Generuje public/og-image.jpg (1200×630) — obrazek Open Graph do podglądu
 // linku w social media. Kompozycja odwzorowuje sekcję Hero: zdjęcie realizacji
 // w tle, granatowa nakładka, logo jako zaokrąglony kafelek + nagłówek/telefon.

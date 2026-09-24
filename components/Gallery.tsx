@@ -1,133 +1,162 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { fadeInUp, staggerContainer, inViewport } from "@/lib/motion";
+import { fadeInUp, inViewport } from "@/lib/motion";
+import { PHOTOS } from "@/lib/content";
 
-// Zdjęcia realizacji BrukWash System (public/images) — kostka brukowa, podjazdy,
-// tarasy i elewacje. Zdjęcie tła Hero (przed/po) nie jest tu duplikowane.
-const PHOTOS = [
-  { src: "/images/IMG20260327095146.jpg", alt: "Mycie ciśnieniowe kostki brukowej — czysty podjazd po renowacji" },
-  { src: "/images/Messenger_creation_BDDC1287-525C-49E0-B89E-DD3EDFF33CC2.jpg", alt: "Ścieżka ogrodowa z kostki brukowej po myciu ciśnieniowym" },
-  { src: "/images/IMG20260413134519.jpg", alt: "Podjazd z kostki brukowej z czerwonym obramowaniem po czyszczeniu" },
-  { src: "/images/IMG20260413111638.jpg", alt: "Kolorowa kostka brukowa po profesjonalnym myciu ciśnieniowym" },
-  { src: "/images/IMG20260327163652.jpg", alt: "Mycie tarasu — efekt przed i po czyszczeniu ciśnieniowym" },
-  { src: "/images/IMG20260413120422.jpg", alt: "Mycie kostki brukowej agregatem do powierzchni płaskich" },
-  { src: "/images/IMG20260331142806.jpg", alt: "Elewacja domu po myciu ciśnieniowym" },
-  { src: "/images/IMG20260401093536.jpg", alt: "Czysta elewacja budynku po renowacji" },
-  { src: "/images/IMG20260331085115.jpg", alt: "Mycie elewacji domu — usuwanie zabrudzeń i zazielenień" },
-  { src: "/images/IMG20260401092139.jpg", alt: "Elewacja domu — efekt przed i po myciu ciśnieniowym" },
-  { src: "/images/IMG20260401093638.jpg", alt: "Odświeżona elewacja budynku po czyszczeniu" },
-  { src: "/images/IMG20260416074735.jpg", alt: "Ścieżka z kostki brukowej w trakcie mycia ciśnieniowego" },
-  { src: "/images/IMG20260518082806.jpg", alt: "Podjazd z kostki brukowej przy żywopłocie po myciu" },
-  { src: "/images/IMG20260518152753.jpg", alt: "Czysty podjazd z kostki brukowej wzdłuż żywopłotu" },
-  { src: "/images/IMG20260618081833.jpg", alt: "Kostka brukowa przy wiacie po myciu ciśnieniowym" },
-  { src: "/images/IMG20260618092744.jpg", alt: "Mycie kostki brukowej przy garażu — efekt po czyszczeniu" },
-  { src: "/images/IMG20260618115728.jpg", alt: "Podjazd z kostki brukowej w ogrodzie po renowacji" },
-  { src: "/images/Messenger_creation_D14D1FB2-9FD3-4956-8CD9-80CE73157187.jpg", alt: "Ścieżka z kostki brukowej w ogrodzie po myciu ciśnieniowym" },
+// Rytm bento (8 pozycji, potem powtórka): duży kadr, poziomy, pionowy, poziomy —
+// a w drugim bloku lustrzane odbicie. grid-flow-dense domyka luki.
+const SPANS = [
+  "col-span-2 row-span-2 lg:col-span-5",
+  "lg:col-span-4",
+  "row-span-2 lg:col-span-3",
+  "lg:col-span-4",
+  "row-span-2 lg:col-span-3",
+  "lg:col-span-4",
+  "col-span-2 row-span-2 lg:col-span-5",
+  "lg:col-span-4",
 ];
+const INITIAL = 8;
 
 export default function Gallery() {
   const [active, setActive] = useState<number | null>(null);
+  const [showAll, setShowAll] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const visible = showAll ? PHOTOS : PHOTOS.slice(0, INITIAL);
 
-  // Lightbox: zamykanie klawiszem Escape + blokada scrolla tła
+  // Natywny <dialog>: pułapka fokusu i Escape „za darmo”
   useEffect(() => {
-    if (active === null) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActive(null);
-    };
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
+    const d = dialogRef.current;
+    if (!d) return;
+    if (active !== null && !d.open) d.showModal();
+    if (active === null && d.open) d.close();
   }, [active]);
 
+  const step = (dir: 1 | -1) =>
+    setActive((i) => (i === null ? i : (i + dir + PHOTOS.length) % PHOTOS.length));
+
   return (
-    <section id="realizacje" className="bg-white py-20 sm:py-28">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="realizacje" aria-labelledby="realizacje-heading" className="py-24 sm:py-32">
+      <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
         <motion.div
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
           viewport={inViewport}
-          className="text-center"
+          className="grid gap-8 lg:grid-cols-12"
         >
-          <h2 className="font-display text-4xl font-bold uppercase tracking-tight text-navy sm:text-5xl">
-            Nasze realizacje
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-dark/70">
-            Zobacz efekty naszej pracy — kostka brukowa, podjazdy, tarasy i elewacje
-            przed i po myciu ciśnieniowym.
-          </p>
+          <p className="eyebrow text-jet-deep lg:col-span-3">(02) — Realizacje</p>
+          <div className="lg:col-span-9 lg:flex lg:items-end lg:justify-between lg:gap-12">
+            <h2 id="realizacje-heading" className="display text-[clamp(3rem,8vw,7.5rem)]">
+              Efekt widać
+              <br />
+              <span className="text-jet-deep">od razu</span>
+            </h2>
+            <p className="mt-6 max-w-sm text-lg leading-relaxed text-stone lg:mt-0">
+              Prawdziwe zdjęcia z naszych zleceń — podjazdy, ścieżki, tarasy
+              i elewacje z Koronowa, Bydgoszczy i okolic. Bez filtrów.
+            </p>
+          </div>
         </motion.div>
 
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={inViewport}
-          className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {PHOTOS.map((photo, i) => (
-            <motion.button
-              key={photo.src}
-              variants={fadeInUp}
-              type="button"
-              onClick={() => setActive(i)}
-              aria-label={`Powiększ zdjęcie realizacji: ${photo.alt}`}
-              className="group relative aspect-[4/3] overflow-hidden rounded-xl shadow-md"
-            >
-              <Image
-                src={photo.src}
-                alt={photo.alt}
-                fill
-                loading="lazy"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <span className="absolute inset-0 bg-navy/0 transition-colors group-hover:bg-navy/20" />
-            </motion.button>
+        <ul className="mt-14 grid auto-rows-[11rem] grid-cols-2 gap-2 grid-flow-dense sm:auto-rows-[15rem] sm:gap-3 lg:auto-rows-[17rem] lg:grid-cols-12">
+          {visible.map((photo, i) => (
+            <li key={photo.src} className={SPANS[i % SPANS.length]}>
+              <button
+                type="button"
+                onClick={() => setActive(i)}
+                aria-label={`Powiększ zdjęcie: ${photo.alt}`}
+                className="group relative block h-full w-full overflow-hidden rounded-xl bg-paper-deep"
+              >
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  sizes="(max-width: 1024px) 50vw, 40vw"
+                  className="object-cover transition-transform duration-[1.2s] ease-wash group-hover:scale-[1.04]"
+                />
+                <span className="absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
+                <span className="eyebrow absolute bottom-3 left-3 flex items-center gap-2 text-paper">
+                  <span className="text-jet-bright">R/{String(i + 1).padStart(2, "0")}</span>
+                  {photo.tag}
+                </span>
+              </button>
+            </li>
           ))}
-        </motion.div>
+        </ul>
+
+        {!showAll && (
+          <div className="mt-8 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setShowAll(true)}
+              className="eyebrow rounded-full border border-ink/25 px-6 py-3.5 transition-colors hover:border-ink hover:bg-ink hover:text-paper"
+            >
+              Pokaż wszystkie ({PHOTOS.length})
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Lightbox modal */}
-      {active !== null && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={PHOTOS[active].alt}
-          onClick={() => setActive(null)}
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
-        >
-          <button
-            type="button"
-            onClick={() => setActive(null)}
-            aria-label="Zamknij podgląd"
-            className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-3xl leading-none text-white hover:bg-white/20"
-          >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
-              <line x1="6" y1="6" x2="18" y2="18" />
-              <line x1="6" y1="18" x2="18" y2="6" />
-            </svg>
-          </button>
-          <div
-            className="relative h-[80vh] w-full max-w-5xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Image
-              src={PHOTOS[active].src}
-              alt={PHOTOS[active].alt}
-              fill
-              sizes="100vw"
-              className="object-contain"
-            />
+      <dialog
+        ref={dialogRef}
+        aria-label={active !== null ? PHOTOS[active].alt : "Podgląd zdjęcia"}
+        onClose={() => setActive(null)}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight") step(1);
+          if (e.key === "ArrowLeft") step(-1);
+        }}
+        onClick={(e) => e.target === e.currentTarget && setActive(null)}
+        className="m-0 h-[100dvh] max-h-none w-screen max-w-none bg-ink/95 p-0 text-paper backdrop:bg-ink/80 backdrop:backdrop-blur-sm"
+      >
+        {active !== null && (
+          <div className="flex h-full flex-col" onClick={(e) => e.target === e.currentTarget && setActive(null)}>
+            <div className="flex items-center justify-between px-4 py-4 sm:px-8">
+              <span className="eyebrow">
+                <span className="text-jet-bright">{String(active + 1).padStart(2, "0")}</span> / {PHOTOS.length}
+              </span>
+              <button
+                type="button"
+                onClick={() => setActive(null)}
+                className="eyebrow rounded-full border border-paper/30 px-4 py-2.5 hover:bg-paper hover:text-ink"
+              >
+                Zamknij ✕
+              </button>
+            </div>
+            <div className="relative mx-4 flex-1 sm:mx-20">
+              <Image
+                key={PHOTOS[active].src}
+                src={PHOTOS[active].src}
+                alt={PHOTOS[active].alt}
+                fill
+                sizes="100vw"
+                className="object-contain"
+              />
+            </div>
+            <div className="flex items-center justify-between gap-4 px-4 py-5 sm:px-8">
+              <button
+                type="button"
+                onClick={() => step(-1)}
+                aria-label="Poprzednie zdjęcie"
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-paper/30 hover:bg-paper hover:text-ink"
+              >
+                ←
+              </button>
+              <p className="text-center text-sm text-paper/75">{PHOTOS[active].alt}</p>
+              <button
+                type="button"
+                onClick={() => step(1)}
+                aria-label="Następne zdjęcie"
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-paper/30 hover:bg-paper hover:text-ink"
+              >
+                →
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </dialog>
     </section>
   );
 }

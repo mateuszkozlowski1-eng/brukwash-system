@@ -1,0 +1,14 @@
+import type { MetadataRoute } from "next";
+import { SITE } from "@/lib/site";
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    {
+      url: SITE.url,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 1,
+      images: [`${SITE.url}/images/podjazd-po.jpg`, `${SITE.url}/og-image.jpg`],
+    },
+  ];
+}
