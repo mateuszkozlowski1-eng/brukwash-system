@@ -101,7 +101,12 @@ const jsonLd = {
       description: DESCRIPTION,
       url: SITE.url,
       logo: `${SITE.url}/logo.jpg`,
-      image: [`${SITE.url}/og-image.jpg`, `${SITE.url}/images/podjazd-po.jpg`],
+      image: [
+        `${SITE.url}/og-image.jpg`,
+        `${SITE.url}/images/mycie-podjazdu-po.jpg`,
+        ...SERVICES.map((s) => `${SITE.url}${s.img}`),
+      ],
+      hasMap: SITE.mapsHref,
       telephone: SITE.phoneE164,
       email: SITE.email,
       priceRange: "Wycena bezpłatna",

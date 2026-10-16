@@ -16,7 +16,7 @@ const H = 630;
 const NAVY = "#1e3a5f";
 const BLUE = "#2d8fd4";
 
-const BG_PHOTO = path.join(ROOT, "public/images/IMG20260413111624.jpg"); // to samo zdjęcie co Hero
+const BG_PHOTO = path.join(ROOT, "public/images/kostka-brukowa-przed-i-po-myciu.jpg"); // to samo zdjęcie co Hero
 const LOGO = path.join(ROOT, "public/logo.jpg");
 const OUT = path.join(ROOT, "public/og-image.jpg");
 

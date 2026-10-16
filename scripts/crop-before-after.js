@@ -13,8 +13,8 @@ const W = 1260;
 const H = 1680;
 
 const jobs = [
-  { src: "IMG20260618092744.jpg", left: 150, top: 60, out: "podjazd-przed.jpg" },
-  { src: "IMG20260618081833.jpg", left: 0, top: 0, out: "podjazd-po.jpg" },
+  { src: "podjazd-pod-wiata-przed-myciem.jpg", left: 150, top: 60, out: "mycie-podjazdu-przed.jpg" },
+  { src: "podjazd-pod-wiata-po-myciu.jpg", left: 0, top: 0, out: "mycie-podjazdu-po.jpg" },
 ];
 
 (async () => {

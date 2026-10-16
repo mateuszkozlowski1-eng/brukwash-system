@@ -78,11 +78,11 @@ export default function Hero() {
             priority
             sizes="(max-width: 1024px) 100vw, 40vw"
             before={{
-              src: "/images/podjazd-przed.jpg",
+              src: "/images/mycie-podjazdu-przed.jpg",
               alt: "Zabrudzony podjazd z kostki brukowej pod wiatą — przed myciem",
             }}
             after={{
-              src: "/images/podjazd-po.jpg",
+              src: "/images/mycie-podjazdu-po.jpg",
               alt: "Ten sam podjazd z kostki brukowej po myciu ciśnieniowym BrukWash System",
             }}
             caption="Realizacja · podjazd z wiatą · 06/2026"
